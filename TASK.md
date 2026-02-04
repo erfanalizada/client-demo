@@ -10,10 +10,10 @@ CONSTRAINTS:
 - Modify ONLY what is required
 
 REPORTED ISSUE:
-Clicking 'Show Alert' does nothing
+The Show Alert button has no click event handler attached. Clicking it does nothing.
 
 EXPECTED BEHAVIOR:
-Alert should appear
+When the user clicks the Show Alert button, a browser alert should appear with the message Hello World.
 
 TARGET FILE:
 index.html
