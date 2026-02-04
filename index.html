@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Client Demo</title>
+</head>
+<body>
+  <h1>Demo App</h1>
+
+  <button id="alertBtn">Show Alert</button>
+  <button id="reportBtn">Report Issue</button>
+
+  <script>
+    // BUG: alert button does nothing (no handler)
+
+    document.getElementById("reportBtn").onclick = async () => {
+      await fetch("https://YOUR-AI-AGENT.up.railway.app/report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          issue: "Clicking 'Show Alert' does nothing",
+          expected: "Alert should appear",
+          file: "index.html"
+        })
+      });
+
+      alert("Issue reported!");
+    };
+  </script>
+</body>
+</html>
