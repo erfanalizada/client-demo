@@ -8,12 +8,28 @@
 
   <button id="alertBtn">Show Alert</button>
   <button id="reportBtn">Report Issue</button>
+  <div id="status" style="margin-top:1em;font-family:monospace;white-space:pre-line;"></div>
 
   <script>
     // BUG: alert button does nothing (no handler)
 
+    const API = "https://ai-agent-production-765c.up.railway.app";
+    const statusDiv = document.getElementById("status");
+
+    const stepLabels = {
+      received: "Job received...",
+      cloning: "Cloning repo...",
+      running_claude: "Running AI fix...",
+      committing: "Committing changes...",
+      pushing: "Pushing changes...",
+      completed: "Done! Issue fixed and deployed.",
+      failed: "Failed"
+    };
+
     document.getElementById("reportBtn").onclick = async () => {
-      await fetch("https://ai-agent-production-765c.up.railway.app/report", {
+      statusDiv.textContent = "Submitting report...";
+
+      const res = await fetch(API + "/report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -23,7 +39,27 @@
         })
       });
 
-      alert("Issue reported!");
+      const { jobId } = await res.json();
+      statusDiv.textContent = "Job started: " + jobId + "\n" + stepLabels.received;
+
+      const poll = setInterval(async () => {
+        try {
+          const sr = await fetch(API + "/status/" + jobId);
+          if (!sr.ok) return;
+          const job = await sr.json();
+
+          statusDiv.textContent = "Job: " + jobId + "\n" + (stepLabels[job.step] || job.step);
+
+          if (job.status === "completed") {
+            clearInterval(poll);
+          } else if (job.status === "failed") {
+            statusDiv.textContent += "\nError: " + job.error;
+            clearInterval(poll);
+          }
+        } catch (e) {
+          // ignore transient fetch errors
+        }
+      }, 2000);
     };
   </script>
 </body>
