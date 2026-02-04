@@ -1,23 +1,20 @@
-You are a senior frontend developer.
+You are a senior frontend developer working in this repository.
 
-GOAL:
-Fix the reported bug in this repository.
+STEP 1: Read the file "index.html" in this directory using your Read tool.
+STEP 2: Identify the bug described below.
+STEP 3: Use your Edit or Write tool to fix the file on disk. You MUST modify the actual file, not just describe the fix.
+
+REPORTED ISSUE:
+Clicking 'Show Alert' does nothing
+
+EXPECTED BEHAVIOR:
+Alert should appear
+
+TARGET FILE:
+index.html
 
 CONSTRAINTS:
 - Make the smallest possible change
 - Do NOT add dependencies
 - Do NOT refactor unrelated code
-- Modify ONLY what is required
-
-REPORTED ISSUE:
-The Show Alert button has no click event handler attached. Clicking it does nothing.
-
-EXPECTED BEHAVIOR:
-When the user clicks the Show Alert button, a browser alert should appear with the message Hello World.
-
-TARGET FILE:
-index.html
-
-INSTRUCTIONS:
-- Apply the fix directly in the codebase
-- Do not explain, just implement
+- You MUST use your tools to edit the file directly
