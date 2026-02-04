@@ -13,7 +13,7 @@
     // BUG: alert button does nothing (no handler)
 
     document.getElementById("reportBtn").onclick = async () => {
-      await fetch("https://YOUR-AI-AGENT.up.railway.app/report", {
+      await fetch("https://ai-agent-production-765c.up.railway.app/report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
