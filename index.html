@@ -133,7 +133,19 @@
         })
       });
 
-      const { jobId } = await res.json();
+      if (!res.ok) {
+        statusDiv.textContent = "Error: Failed to submit report";
+        return;
+      }
+
+      const data = await res.json();
+      const jobId = data.jobId;
+
+      if (!jobId) {
+        statusDiv.textContent = "Error: No job ID returned";
+        return;
+      }
+
       statusDiv.textContent = "Job started: " + jobId + "\n" + stepLabels.received;
 
       const poll = setInterval(async () => {
