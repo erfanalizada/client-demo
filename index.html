@@ -51,12 +51,14 @@
 <body>
   <h1>Demo App</h1>
 
-  <button id="">Show Alert</button>
+  <button id="alertBtn">Show Alert</button>
   <button id="reportBtn">Report Issue</button>
   <div id="status" style="margin-top:1em;font-family:monospace;white-space:pre-line;"></div>
 
   <script>
-  
+    document.getElementById("alertBtn").onclick = () => {
+      alert("Hello! This is an alert.");
+    };
 
     const API = "https://ai-agent-production-765c.up.railway.app";
     const statusDiv = document.getElementById("status");
