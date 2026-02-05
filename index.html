@@ -39,27 +39,60 @@
     }
 
     #status {
-      margin-top: 2rem;
+      position: fixed;
+      top: 20px;
+      left: 20px;
       padding: 1rem;
       background: rgba(255,255,255,0.9);
       border-radius: 6px;
-      min-width: 300px;
-      max-width: 500px;
+      min-width: 250px;
+      max-width: 350px;
+      font-family: monospace;
+      white-space: pre-line;
+    }
+
+    #reportContainer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #issueInput {
+      display: none;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      width: 250px;
+    }
+
+    #submitBtn {
+      display: none;
     }
   </style>
 </head>
 <body>
+  <div id="status"></div>
+
+  <div id="reportContainer">
+    <input type="text" id="issueInput" placeholder="Describe the issue...">
+    <button id="submitBtn">Submit</button>
+    <button id="reportBtn">Report Issue</button>
+  </div>
+
   <h1>Demo App</h1>
 
   <button id="alertBtn">Show Alert</button>
-  <button id="reportBtn">Report Issue</button>
-  <div id="status" style="margin-top:1em;font-family:monospace;white-space:pre-line;"></div>
 
   <script>
- 
-
     const API = "https://ai-agent-production-765c.up.railway.app";
     const statusDiv = document.getElementById("status");
+    const reportBtn = document.getElementById("reportBtn");
+    const issueInput = document.getElementById("issueInput");
+    const submitBtn = document.getElementById("submitBtn");
 
     const stepLabels = {
       received: "Job received...",
@@ -71,15 +104,31 @@
       failed: "Failed"
     };
 
-    document.getElementById("reportBtn").onclick = async () => {
+    reportBtn.onclick = () => {
+      issueInput.style.display = "block";
+      submitBtn.style.display = "block";
+      reportBtn.style.display = "none";
+      issueInput.focus();
+    };
+
+    submitBtn.onclick = async () => {
+      const issueText = issueInput.value.trim();
+      if (!issueText) {
+        statusDiv.textContent = "Please describe the issue.";
+        return;
+      }
+
       statusDiv.textContent = "Submitting report...";
+      issueInput.style.display = "none";
+      submitBtn.style.display = "none";
+      reportBtn.style.display = "block";
+      issueInput.value = "";
 
       const res = await fetch(API + "/report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          issue: "Clicking 'Show Alert' does nothing fix this",
-          expected: "Alert should appear",
+          issue: issueText,
           file: "index.html"
         })
       });
